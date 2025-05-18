@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coming Soon - Marvellous Vibes</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top, #1a1a40, #000);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      color: #fff;
+    }
+
+    .background {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      animation: float 10s infinite linear;
+    }
+
+    @keyframes float {
+      from {
+        transform: translateY(100vh) scale(1);
+      }
+      to {
+        transform: translateY(-10vh) scale(0.5);
+      }
+    }
+
+    .container {
+      z-index: 1;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 30px rgba(255,255,255,0.2);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #ffccff;
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      color: #ddd;
+    }
+
+    .clock {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 20px;
+      border: 5px solid #fff;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      box-shadow: 0 0 10px #fff3;
+    }
+
+    .hand {
+      position: absolute;
+      width: 50%;
+      height: 3px;
+      background: #fff;
+      top: 50%;
+      left: 50%;
+      transform-origin: left;
+      transform: rotate(90deg);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .hand.hour {
+      width: 35%;
+      height: 4px;
+      background: #ff99cc;
+    }
+
+    .countdown-text {
+      font-size: 1rem;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="background" id="particle-bg"></div>
+
+  <div class="container">
+    <h1>Marvellous Moments Loading... 💖</h1>
+    <p>Our hearts are crafting something magical. Stay tuned!</p>
+    <div class="clock">
+      <div class="hand hour" id="hour-hand"></div>
+      <div class="hand" id="minute-hand"></div>
+      <div class="hand" id="second-hand"></div>
+    </div>
+    <div class="countdown-text" id="countdown-label">Counting down to magic... ✨</div>
+  </div>
+
+  <script>
+    // 🎯 Set launch date
+    const launchDate = new Date("2025-06-01T00:00:00").getTime();
+
+    function updateClock() {
+      const now = new Date().getTime();
+      const distance = launchDate - now;
+
+      if (distance <= 0) {
+        document.getElementById("countdown-label").innerText = "We're live! 🚀";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((distance / (1000 * 60)) % 60);
+      const seconds = Math.floor((distance / 1000) % 60);
+
+      document.getElementById("countdown-label").innerText =
+        `⏳ ${days}d ${hours}h ${minutes}m ${seconds}s to go!`;
+
+      // Rotate hands
+      const secondDeg = seconds * 6;
+      const minuteDeg = minutes * 6 + seconds * 0.1;
+      const hourDeg = (hours % 12) * 30 + minutes * 0.5;
+
+      document.getElementById("second-hand").style.transform = `rotate(${secondDeg}deg)`;
+      document.getElementById("minute-hand").style.transform = `rotate(${minuteDeg}deg)`;
+      document.getElementById("hour-hand").style.transform = `rotate(${hourDeg}deg)`;
+    }
+
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // ✨ Particle animation background
+    const particleCount = 50;
+    const bg = document.getElementById('particle-bg');
+    for (let i = 0; i < particleCount; i++) {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      p.style.left = `${Math.random() * 100}%`;
+      p.style.animationDuration = `${5 + Math.random() * 10}s`;
+      p.style.opacity = Math.random();
+      p.style.transform = `scale(${0.5 + Math.random()})`;
+      bg.appendChild(p);
+    }
+  </script>
+</body>
+</html>
